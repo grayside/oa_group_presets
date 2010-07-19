@@ -1,0 +1,12 @@
+# OA Group Presets
+
+Provides different default group settings for OpenAtrium.
+
+1. Renames Public Group preset to Open Group.
+2. Adds Moderated Group preset (as Public/Open Group, with moderated membership).
+3. Defaults a new Group Welcome block in place of the default Video-laden welcome block.
+  * Welcome message comes from a restored body field, and falls back to the group description if that is left out.
+
+## Todos
+
+* Add a dashboard tab for uploaded files. (Such a thing is currently broken in Atrium, so is not done here.)

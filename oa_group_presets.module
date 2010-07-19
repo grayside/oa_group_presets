@@ -1,0 +1,46 @@
+<?php
+
+require ('oa_group_presets.features.inc');
+
+/**
+ * Implementation of hook_form_FORM_ID_alter().
+ */
+function oa_group_presets_form_group_node_form_alter(&$form, &$form_state) {
+  // Restore node body field. Used (optionall) to populate welcome message.
+  $form['body_field'] = node_body_field($form['#node'], t('Welcome Message'), 0);
+  $form['body_field']['body']['#rows'] = 3;
+}
+
+
+/**
+ * Implementation of hook_block().
+ */
+function oa_group_presets_block($op = 'list', $delta = 0) {
+  switch ($op) {
+    case 'list':
+      return array(
+        'group_welcome' => array('info' => t('Group Welcome'), 'cache' => BLOCK_CACHE_PER_PAGE),
+      );
+    case 'configure':
+      return array();
+    case 'save':
+      return;
+    case 'view':
+      $block = array();
+      switch ($delta) {
+        case 'group_welcome':
+          $space = spaces_get_space();
+          if ($space->type == 'og') {
+            $block['subject'] = t('Welcome to !group', array('!group' => $space->group->title));
+            if (!empty($space->group->body)) {
+              $block['content'] = check_markup($space->group->body, $space->group->format);
+            }
+            else {
+              $block['content'] = $space->group->og_description;
+            }
+          }
+          break;
+      }
+      return $block;
+  }
+}
